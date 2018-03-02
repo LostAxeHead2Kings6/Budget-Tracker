@@ -1,8 +1,22 @@
-DROP DATABASE IF EXISTS test;
+DROP DATABASE IF EXISTS budgetPlanner;
 
-CREATE DATABASE test;
+CREATE DATABASE budgetPlanner;
 
-USE test;
+USE budgetPlanner;
+
+-- DROP TABLE IF EXISTS expenseTotals;
+--
+-- CREATE TABLE expenseTotals (
+--   category varchar(50),
+--   amount int NOT NULL,
+-- );
+--
+-- DROP TABLE IF EXISTS incomeTotals;
+--
+-- CREATE TABLE incomeTotals (
+--   category varchar(50),
+--   amount int NOT NULL,
+-- );
 
 CREATE TABLE expenses (
   id int NOT NULL AUTO_INCREMENT,
@@ -37,6 +51,15 @@ CREATE TABLE idealValues (
 );
 
 INSERT INTO idealValues (projectedIncome, projectedBudget, projectedSavings) VALUES (2500.00, 2000.00, 500.00);
+
+INSERT INTO incomeCategories (name) VALUES ("Work");
+INSERT INTO incomeCategories (name) VALUES ("Other");
+
+INSERT INTO expenseCategories (name) VALUES ("Insurance");
+INSERT INTO expenseCategories (name) VALUES ("Auto");
+INSERT INTO expenseCategories (name) VALUES ("Fun");
+INSERT INTO expenseCategories (name) VALUES ("Rent");
+INSERT INTO expenseCategories (name) VALUES ("Food");
 
 
 /*  Execute this file from the command line by typing:

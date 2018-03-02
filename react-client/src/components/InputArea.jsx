@@ -6,8 +6,8 @@ class InputArea extends React.Component {
     this.state = {
       userInputIncome: 0.00,
       userInputExpense: 0.00,
-      incomeCategory: "work",
-      expenseCategory: "insurance"
+      incomeCategory: "Work",
+      expenseCategory: "Insurance"
     }
   }
 
@@ -17,10 +17,10 @@ class InputArea extends React.Component {
         <h1>Income</h1>
           <input type="number" step="0.01" min="-9999999999.99" max="9999999999.99" value={this.state.userInputIncome} onChange={(e)=>this.setState({userInputIncome: e.target.value})}></input>
           <select id="income" onChange={(e)=>{this.setState({incomeCategory: e.target.value})}}>
-            <option value="work">Work</option>
-            <option value="other">Other</option>
+            <option value="Work">Work</option>
+            <option value="Other">Other</option>
           </select>
-        <button onClick={()=>this.props.submitIncome({category: this.state.incomeCategory, amount: this.state.userInputIncome})}>Submit</button>
+        <button onClick={()=>this.props.submitIncome(this.state.incomeCategory, this.state.userInputIncome)}>Submit</button>
       </div>
       <div>
         <h1>Expenses</h1>
@@ -32,7 +32,7 @@ class InputArea extends React.Component {
             <option value="Rent">Rent</option>
             <option value="Food">Food</option>
           </select>
-        <button onClick={()=>this.props.submitExpenses({category: this.state.expenseCategory, amount: this.state.userInputExpense})}>Submit</button>
+        <button onClick={()=>this.props.submitExpenses(this.state.expenseCategory, this.state.userInputExpense)}>Submit</button>
       </div>
     </div>)
   }

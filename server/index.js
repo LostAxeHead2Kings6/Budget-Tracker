@@ -6,16 +6,46 @@ var items = require('../database-mysql');
 var app = express();
 
 app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(bodyParser.json());
 
-app.post('/income', function (req, res) {
-  console.log("received");
-  res.status(201).send();
+app.get('/ideals', function(req, res) {
+  items.getIdeals(function(results) {
+    res.status(201).send(results);
+  });
+});
+
+app.post('/income', function(req, res) {
+  console.log(req.body);
+  items.addIncome(parseInt(req.body.amount), req.body.category, function(error, results) {
+    res.end();
+  });
 });
 
 app.post('/expenses', function(req, res) {
-  res.status(201).send();
+  console.log(req.body);
+  items.addExpense(parseInt(req.body.amount), req.body.category, function(error, results) {
+    res.end();
+  });
 });
 
-app.listen(3000, function() {
-  console.log('listening on port 3000!');
+app.get('/income', function(req, res) {
+  items.createIncomeTotals(function() {
+    items.getIncomeTotals(function(results) {
+      console.log(results);
+      res.status(201).send(results);
+    });
+  });
+});
+
+app.get('/expenses', function (req, res) {
+  items.createExpenseTotals(function() {
+    items.getExpenseTotals(function(results) {
+      console.log(results);
+      res.status(201).send(results);
+    });
+  });
+});
+
+app.listen(8080, function() {
+  console.log('listening on port 8080!');
 });
