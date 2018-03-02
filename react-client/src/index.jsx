@@ -67,14 +67,13 @@ class App extends React.Component {
 
     return (<div>
       <h1>Budget Planner</h1>
-      <h2>{JSON.stringify(this.state.idealValues)}</h2>
-      <h2>{JSON.stringify(this.state.totalIncome)}</h2>
-      <h2>{JSON.stringify(this.state.totalExpenses)}</h2>
       <InputArea submitIncome={this.submitIncome} submitExpenses={this.submitExpenses}/>
-
+      <h2>Budget Goals</h2>
       <Visualization num="1" columns={this.state.idealValues} />
-      <Visualization num="2" columns={this.state.idealValues} />
-      <Visualization num="3" columns={this.state.idealValues} />
+      <h2>Monthly Income</h2>
+      <Visualization num="2" columns={this.state.totalIncome} />
+      <h2>Monthly Expenses</h2>
+      <Visualization num="3" columns={this.state.totalExpenses} />
     </div>)
   }
 }
