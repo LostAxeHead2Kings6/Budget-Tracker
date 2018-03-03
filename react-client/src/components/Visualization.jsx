@@ -8,33 +8,73 @@ class Visualization extends React.Component {
 
     this.state={
       num: "chart" + this.props.num,
-      chartType: 'bar'
+      type: 'pie'
     }
-
+    this.transformToPie=this.transformToPie.bind(this);
+    this.transformToBar=this.transformToBar.bind(this);
+    this.setState=this.setState.bind(this);
+    this._startChart=this._startChart.bind(this);
   }
 
   componentDidMount() {
-    this._updateChart();
-
+    this._startChart();
   }
   componentDidUpdate() {
-    this._updateChart();
+    this._startChart();
   }
 
-  _updateChart() {
+  _startChart() {
     const chart = c3.generate({
       bindto: '#chart' + this.props.num,
       data: {
         columns: this.props.columns,
-        type: this.state.chartType
+        type: this.state.type
       }
     });
   }
 
+  transformToPie() {
+    const chart = c3.generate({
+      bindto: '#chart' + this.props.num,
+      data: {
+        columns: this.props.columns,
+        type: this.state.type
+      }
+    });
+   var adjust = function() {this.setState({type:'pie'})}.bind(this);
+
+    setTimeout(function () {
+      chart.transform('pie');
+    }, 500);
+
+    setTimeout(function () {
+      adjust();
+    }, 1000);
+  }
+
+  transformToBar() {
+    const chart = c3.generate({
+      bindto: '#chart' + this.props.num,
+      data: {
+        columns: this.props.columns,
+        type: this.state.type
+      }
+    });
+   var adjust = function() {this.setState({type:'bar'})}.bind(this);
+
+    setTimeout(function () {
+      chart.transform('bar');
+    }, 500);
+
+    setTimeout(function () {
+      adjust();
+    }, 1000);
+  }
+
   render() {
     return ( <div>
-      <button onClick={()=>this.setState({chartType: 'pie'})}>Pie Chart</button>
-      <button onClick={()=>this.setState({chartType: 'bar'})}>Bar Graph</button>
+      <button onClick={()=>this.transformToPie()}>Pie Chart</button>
+      <button onClick={()=>this.transformToBar()}>Bar Graph</button>
       <div id={this.state.num}>hi</div>
       </div>
     )

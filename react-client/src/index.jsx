@@ -20,14 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/ideals')
-    .then((results) => this.setState({idealValues: this.transformIdealData(results.data)}));
-
-    axios.get('/income')
-    .then((results) => this.setState({totalIncome: this.transformTotals(results.data)}));
-
-    axios.get('/expenses')
-    .then((results) => this.setState({totalExpenses: this.transformTotals(results.data)}));
+    this.refreshData();
   }
 
   transformIdealData(data) {
@@ -55,12 +48,23 @@ class App extends React.Component {
     return totalColumns;
   }
 
+  refreshData() {
+    axios.get('/ideals')
+    .then((results) => this.setState({idealValues: this.transformIdealData(results.data)}));
+    axios.get('/income')
+    .then((results) => this.setState({totalIncome: this.transformTotals(results.data)}));
+    axios.get('/expenses')
+    .then((results) => this.setState({totalExpenses: this.transformTotals(results.data)}));
+  }
+
   submitIncome(category, amount) {
     axios.post('/income', {category: category, amount: amount})
+    .then(() => this.refreshData());
   }
 
   submitExpenses(category, amount) {
     axios.post('/expenses', {category: category, amount: amount})
+    .then(() => this.refreshData());
   }
 
   render () {
@@ -68,12 +72,12 @@ class App extends React.Component {
     return (<div>
       <h1>Budget Planner</h1>
       <InputArea submitIncome={this.submitIncome} submitExpenses={this.submitExpenses}/>
-      <h2>Budget Goals</h2>
-      <Visualization num="1" columns={this.state.idealValues} />
       <h2>Monthly Income</h2>
       <Visualization num="2" columns={this.state.totalIncome} />
       <h2>Monthly Expenses</h2>
       <Visualization num="3" columns={this.state.totalExpenses} />
+      <h2>Budget Goals</h2>
+      <Visualization num="1" columns={this.state.idealValues} />
     </div>)
   }
 }
