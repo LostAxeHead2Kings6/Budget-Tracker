@@ -14,11 +14,28 @@ class Visualization extends React.Component {
     this.transformToBar=this.transformToBar.bind(this);
     this.setState=this.setState.bind(this);
     this._startChart=this._startChart.bind(this);
+
+    this.chart = c3.generate({
+      bindto: '#chart' + this.props.num,
+      data: {
+        columns: this.props.columns,
+        type: this.state.type
+      }
+    });
   }
 
   componentDidMount() {
     this._startChart();
   }
+
+  componentWillReceiveProps(newProps){
+    this.chart.load({
+      data: {
+        columns: newProps
+      }
+    });
+  }
+
   componentDidUpdate() {
     this._startChart();
   }

@@ -20,7 +20,7 @@ USE budgetPlanner;
 
 CREATE TABLE expenses (
   id int NOT NULL AUTO_INCREMENT,
-  amount int NOT NULL,
+  amount int NOT NULL DEFAULT 0,
   category_id int,
   PRIMARY KEY (id)
 );
@@ -33,7 +33,7 @@ CREATE TABLE expenseCategories (
 
 CREATE TABLE income (
   id int NOT NULL AUTO_INCREMENT,
-  amount int NOT NULL,
+  amount int NOT NULL DEFAULT 0,
   category_id int,
   PRIMARY KEY (ID)
 );
@@ -45,12 +45,12 @@ CREATE TABLE incomeCategories (
 );
 
 CREATE TABLE idealValues (
-  projectedIncome int NOT NULL,
-  projectedBudget int NOT NULL,
-  projectedSavings int NOT NULL
+  projectedIncome int NOT NULL DEFAULT 0,
+  projectedExpenses int NOT NULL DEFAULT 0,
+  projectedSavings int NOT NULL DEFAULT 0
 );
 
-INSERT INTO idealValues (projectedIncome, projectedBudget, projectedSavings) VALUES (2500.00, 2000.00, 500.00);
+INSERT INTO idealValues (projectedIncome, projectedExpenses, projectedSavings) VALUES (2500.00, 2000.00, 500.00);
 
 INSERT INTO incomeCategories (name) VALUES ("Work");
 INSERT INTO incomeCategories (name) VALUES ("Other");

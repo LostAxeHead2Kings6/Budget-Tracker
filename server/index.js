@@ -46,6 +46,15 @@ app.get('/expenses', function (req, res) {
   });
 });
 
+app.get('/actuals', function(req, res) {
+  items.createActualTotals(function() {
+    items.getActuals(function(results) {
+      console.log(results);
+      res.status(201).send(results);
+    });
+  });
+});
+
 app.listen(8080, function() {
   console.log('listening on port 8080!');
 });

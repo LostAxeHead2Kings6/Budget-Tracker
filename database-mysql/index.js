@@ -36,23 +36,23 @@ var createExpenseTotals = function(callback) {
         if (err) {
           console.log(err, "there's an error 2");
         } else {
-          connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Auto", (SELECT SUM(amount) FROM expenses WHERE category_id=2))', (err, results) => {
+          connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Auto", (SELECT SUM(amount) FROM expenses WHERE category_id=2));', (err, results) => {
             if (err) {
               console.log(err, "there's an error 3");
             } else {
-              connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Food", (SELECT SUM(amount) FROM expenses WHERE category_id=5))', (err, results) => {
+              connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Food", (SELECT SUM(amount) FROM expenses WHERE category_id=5));', (err, results) => {
                 if (err) {
                   console.log(err, "there's an error 4");
                 } else {
-                  connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Fun", (SELECT SUM(amount) FROM expenses WHERE category_id=3))', (err, results) => {
+                  connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Fun", (SELECT SUM(amount) FROM expenses WHERE category_id=3));', (err, results) => {
                     if (err) {
                       console.log(err, "There's an error 5");
                     } else {
-                      connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Insurance", (SELECT SUM(amount) FROM expenses WHERE category_id=1))', (err, results) => {
+                      connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Insurance", (SELECT SUM(amount) FROM expenses WHERE category_id=1));', (err, results) => {
                         if (err) {
                           console.log(err, "There's an error 6");
                         } else {
-                          connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Rent", (SELECT SUM(amount) FROM expenses WHERE category_id=4))', (err, results) => {
+                          connection.query('INSERT INTO expenseTotals (category, amount) VALUES ("Rent", (SELECT SUM(amount) FROM expenses WHERE category_id=4));', (err, results) => {
                             if (err) {
                               console.log(err, "There's an error 7");
                             } else {
@@ -83,11 +83,11 @@ var createIncomeTotals = function(callback) {
         if (err) {
           console.log(err, "there's an error 2");
         } else {
-          connection.query('INSERT INTO incomeTotals (category, amount) VALUES ("Work", (SELECT SUM(amount) FROM income WHERE category_id=1))', (err, results) => {
+          connection.query('INSERT INTO incomeTotals (category, amount) VALUES ("Work", (SELECT SUM(amount) FROM income WHERE category_id=1));', (err, results) => {
             if (err) {
               console.log(err, "there's an error 3");
             } else {
-              connection.query('INSERT INTO incomeTotals (category, amount) VALUES ("Other", (SELECT SUM(amount) FROM income WHERE category_id=2))', (err, results) => {
+              connection.query('INSERT INTO incomeTotals (category, amount) VALUES ("Other", (SELECT SUM(amount) FROM income WHERE category_id=2));', (err, results) => {
                 if (err) {
                   console.log(err, "there's an error 4");
                 } else {
@@ -134,6 +134,42 @@ var getExpenseTotals = function(callback) {
   });
 };
 
+var createActualTotals = function(callback) {
+  connection.query(`DROP TABLE IF EXISTS actualTotals;`, (err, results) => {
+    if (err) {
+      console.log(err, "there's an error 1");
+    } else {
+      connection.query('CREATE TABLE actualTotals (actualIncome int not null default 0, actualExpenses int not null default 0);', (err, results) => {
+        if (err) {
+          console.log(err, "there's an error 2");
+        } else {
+          connection.query('INSERT INTO actualTotals (actualIncome, actualExpenses) VALUES ((SELECT SUM(amount) FROM incomeTotals), (SELECT SUM(amount) FROM expenseTotals));', (err, results) => {
+            if (err) {
+              console.log(err, "there's an error 3");
+            } else {
+              console.log("The ActualBudget table has been created!");
+              callback();
+            }
+          });
+        };
+      });
+    };
+  });
+};
+
+
+var getActuals = function(callback) {
+  connection.query(`SELECT * from actualTotals;`, function(err, results) {
+    if (err) {
+      console.log(err, 'There was an error');
+    } else {
+      callback(results);
+    }
+  });
+};
+
+module.exports.createActualTotals = createActualTotals;
+module.exports.getActuals = getActuals;
 module.exports.getExpenseTotals = getExpenseTotals;
 module.exports.getIncomeTotals = getIncomeTotals;
 module.exports.createIncomeTotals = createIncomeTotals;
